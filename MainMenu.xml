@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MenuItemCollection>
+    <MenuItem>
+        <Title>User</Title>
+        <Image>menu_user</Image>
+    </MenuItem>
+    <MenuItem>
+        <Title>Home</Title>
+        <Image>menu_home</Image>
+    </MenuItem>
+    <MenuItem>
+        <Title>Activity</Title>
+        <Image>menu_activity</Image>
+    </MenuItem>
+    <MenuItem>
+        <Title>Setting</Title>
+        <Image>menu_setting</Image>
+    </MenuItem>
+</MenuItemCollection>
