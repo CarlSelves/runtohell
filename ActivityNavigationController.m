@@ -1,23 +1,23 @@
 //
-//  HomeNavigationController.m
+//  ActivityNavigationController.m
 //  Run and Roll
 //
-//  Created by Joaquin on 13-1-25.
+//  Created by Joaquin on 13-1-28.
 //  Copyright (c) 2013年 Joaquin Hwang. All rights reserved.
 //
 
-#import "HomeNavigationController.h"
+#import "ActivityNavigationController.h"
 
-@interface HomeNavigationController ()
+@interface ActivityNavigationController ()
 
 @end
 
-@implementation HomeNavigationController
+@implementation ActivityNavigationController
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-	// Do any additional setup after loading the view.
+    
     if (![self.slidingViewController.underLeftViewController isKindOfClass:[MenuViewController class]]) {
         self.slidingViewController.underLeftViewController  = [self.storyboard instantiateViewControllerWithIdentifier:@"Menu"];
     }

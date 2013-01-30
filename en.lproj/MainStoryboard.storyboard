@@ -58,6 +58,10 @@
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="cpc-ex-n0L" id="A5K-AV-0yY"/>
+                                    <outlet property="delegate" destination="cpc-ex-n0L" id="WZk-o8-LoT"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -111,6 +115,57 @@
             </objects>
             <point key="canvasLocation" x="787" y="121"/>
         </scene>
+        <!--Activity Navigation Controller-->
+        <scene sceneID="bDo-kC-tVj">
+            <objects>
+                <navigationController storyboardIdentifier="Activity" definesPresentationContext="YES" id="cnx-Xc-UbT" customClass="ActivityNavigationController" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Sb8-sq-pyE">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Rpw-JA-nFL" kind="relationship" relationship="rootViewController" id="a6i-9q-wxl"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Edt-q0-7qJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="334" y="770"/>
+        </scene>
+        <!--Activity Table View Controller-->
+        <scene sceneID="3Qs-lP-Ri0">
+            <objects>
+                <tableViewController id="Rpw-JA-nFL" customClass="ActivityTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="8Bm-3Z-oFL">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="oLK-4f-0tL">
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Rpw-JA-nFL" id="fkG-99-PwM"/>
+                            <outlet property="delegate" destination="Rpw-JA-nFL" id="beZ-dv-5nd"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="qno-wm-zzh">
+                        <barButtonItem key="leftBarButtonItem" title="Menu" id="lXZ-CK-f5S">
+                            <connections>
+                                <action selector="revealMenu:" destination="Rpw-JA-nFL" id="PXB-pr-dre"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0yR-Tu-LK4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="787" y="770"/>
+        </scene>
         <!--Run Setup Table View Controller - Run Setup-->
         <scene sceneID="tFU-5l-b3l">
             <objects>
@@ -139,42 +194,9 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vr9-dJ-7v8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1253" y="121"/>
+            <point key="canvasLocation" x="1381" y="-275"/>
         </scene>
     </scenes>
-    <classes>
-        <class className="ECSlidingViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ECSlidingViewController.h"/>
-        </class>
-        <class className="HomeNavigationController" superclassName="UINavigationController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/HomeNavigationController.h"/>
-        </class>
-        <class className="HomeViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/HomeViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="revealMenu:"/>
-            </relationships>
-        </class>
-        <class className="InitailSlidingViewController" superclassName="ECSlidingViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/InitailSlidingViewController.h"/>
-        </class>
-        <class className="MainMenuCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainMenuCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="menuImageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="menuLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="MenuViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MenuViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="RunSetupTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/RunSetupTableViewController.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

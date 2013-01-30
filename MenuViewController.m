@@ -19,13 +19,14 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [self.slidingViewController setAnchorRightRevealAmount:100.0f];
+    [self.slidingViewController setAnchorRightRevealAmount:260.0f];
     self.slidingViewController.underLeftWidthLayout = ECFullWidth;
     
     menuItems = [[ConfigurationManager getInstance] getMenuItem];
     
     NSLog(@"%d", [menuItems count]);
-    self.tableView.dataSource = self;
+    //self.tableView.dataSource = self;
+    //self.tableView.delegate = self;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -53,6 +54,15 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
+    NSString *identifier = [[[[menuItems objectAtIndex:indexPath.row] elementsForName:@"Title"] objectAtIndex:0] stringValue];
+    UIViewController *newTopViewController = [self.storyboard instantiateViewControllerWithIdentifier:identifier];
+    
+    [self.slidingViewController anchorTopViewOffScreenTo:ECRight animations:nil onComplete:^{
+        CGRect frame = self.slidingViewController.topViewController.view.frame;
+        self.slidingViewController.topViewController = newTopViewController;
+        self.slidingViewController.topViewController.view.frame = frame;
+        [self.slidingViewController resetTopView];
+    }];
 }
 
 //- (void)viewDidUnload
