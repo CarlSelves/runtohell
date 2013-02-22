@@ -16,6 +16,7 @@
 {
     NSArray* menuItems;
 }
-@property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UITableView *MovetableView;
+@property (strong, nonatomic) IBOutlet UITableView *UnmovetableView;
 
 @end

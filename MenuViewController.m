@@ -23,10 +23,6 @@
     self.slidingViewController.underLeftWidthLayout = ECFullWidth;
     
     menuItems = [[ConfigurationManager getInstance] getMenuItem];
-    
-    NSLog(@"%d", [menuItems count]);
-    //self.tableView.dataSource = self;
-    //self.tableView.delegate = self;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -36,8 +32,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"%d", [menuItems count]);
-    return [menuItems count];
+    NSInteger number = 0;
+    if (tableView == self.MovetableView)
+        number = [menuItems count] - 1;
+    else if (tableView == self.UnmovetableView)
+        number = 1;
+    return number;
 }
 
 
@@ -45,16 +45,33 @@
 {
     static NSString *CellIdentifier = @"MainMenuCell";
     MainMenuCell *cell = (MainMenuCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+
+    NSLog(@"indexpathrow:%d", indexPath.row);
+    if (tableView == self.MovetableView)
+    {
+        cell.menuLabel.text = [[[[menuItems objectAtIndex:indexPath.row + 1] elementsForName:@"Title"] objectAtIndex:0] stringValue];
+    }
+    else if (tableView == self.UnmovetableView)
+    {
+        cell.menuLabel.text = [[[[menuItems objectAtIndex:indexPath.row] elementsForName:@"Title"] objectAtIndex:0] stringValue];
+    }
     
-    //cell.menuImageView.image =
-    cell.menuLabel.text = [[[[menuItems objectAtIndex:indexPath.row] elementsForName:@"Title"] objectAtIndex:0] stringValue];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSString *identifier;
+    if (tableView == self.UnmovetableView)
+    {
+        identifier = [[[[menuItems objectAtIndex:indexPath.row] elementsForName:@"Title"] objectAtIndex:0] stringValue];
+    }
+    else if (tableView == self.MovetableView)
+    {
+        identifier = [[[[menuItems objectAtIndex:indexPath.row + 1] elementsForName:@"Title"] objectAtIndex:0] stringValue];
+
+    }
     
-    NSString *identifier = [[[[menuItems objectAtIndex:indexPath.row] elementsForName:@"Title"] objectAtIndex:0] stringValue];
     UIViewController *newTopViewController = [self.storyboard instantiateViewControllerWithIdentifier:identifier];
     
     [self.slidingViewController anchorTopViewOffScreenTo:ECRight animations:nil onComplete:^{
@@ -65,8 +82,4 @@
     }];
 }
 
-//- (void)viewDidUnload
-//{
-//    [menuItems release];
-//}
 @end
