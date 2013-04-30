@@ -1,18 +1,27 @@
 //
-//  ActivityTableViewController.m
+//  ArtistTableViewController.m
 //  Run and Roll
 //
-//  Created by Carl on 13-1-28.
-//  Copyright (c) 2013年 Carl Hwang. All rights reserved.
+//  Created by Joaquin on 13-4-20.
+//  Copyright (c) 2013年 Joaquin Hwang. All rights reserved.
 //
 
-#import "ActivityTableViewController.h"
+#import "ArtistTableViewController.h"
 
-@interface ActivityTableViewController ()
+@interface ArtistTableViewController ()
 
 @end
 
-@implementation ActivityTableViewController
+@implementation ArtistTableViewController
+
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -25,18 +34,25 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-
+#warning Potentially incomplete method implementation.
+    // Return the number of sections.
     return 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-
+#warning Incomplete method implementation.
+    // Return the number of rows in the section.
     return 0;
 }
 
@@ -102,8 +118,4 @@
      */
 }
 
-- (IBAction)revealMenu:(id)sender
-{
-    [self.slidingViewController anchorTopViewTo:ECRight];
-}
 @end

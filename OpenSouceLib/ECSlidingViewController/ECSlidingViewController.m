@@ -278,7 +278,7 @@ NSString *const ECSlidingViewTopDidReset             = @"ECSlidingViewTopDidRese
       }
       
       //when moving, do something below
-      //modify by joaquin 13/1/24, 这个if语句实现视图只在打开后可以手控
+      //modify by Carl 13/1/24, 这个if语句实现视图只在打开后可以手控
         if (self.topView.center.x > self.resettedCenter)
         {
             [self topViewHorizontalCenterWillChange:newCenterPosition];

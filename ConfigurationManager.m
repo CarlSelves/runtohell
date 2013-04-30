@@ -2,8 +2,8 @@
 //  ConfigurationManager.m
 //  Run and Roll
 //
-//  Created by Joaquin on 13-1-25.
-//  Copyright (c) 2013年 Joaquin Hwang. All rights reserved.
+//  Created by Carl on 13-1-25.
+//  Copyright (c) 2013年 Carl Hwang. All rights reserved.
 //
 
 #import "ConfigurationManager.h"
@@ -30,6 +30,6 @@
     return menuItems;
 }
 
-//余留问题，单例模式，合适释放申请的内存
+//余留问题，单例模式，何时释放申请的内存
 
 @end

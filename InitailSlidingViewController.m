@@ -2,11 +2,12 @@
 //  InitailSlidingViewController.m
 //  Run and Roll
 //
-//  Created by Joaquin on 13-1-23.
-//  Copyright (c) 2013年 Joaquin Hwang. All rights reserved.
+//  Created by Carl on 13-1-23.
+//  Copyright (c) 2013年 Carl Hwang. All rights reserved.
 //
 
 #import "InitailSlidingViewController.h"
+#import "DataManager.h"
 
 @interface InitailSlidingViewController ()
 
@@ -21,6 +22,8 @@
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
     self.topViewController = [storyboard instantiateViewControllerWithIdentifier:@"Home"];
+    
+    [[DataManager getInstance] openDatabase];
 }
 
 - (void)didReceiveMemoryWarning

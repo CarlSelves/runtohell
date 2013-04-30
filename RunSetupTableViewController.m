@@ -2,8 +2,8 @@
 //  RunSetupTableViewController.m
 //  Run and Roll
 //
-//  Created by Joaquin on 13-1-24.
-//  Copyright (c) 2013年 Joaquin Hwang. All rights reserved.
+//  Created by Carl on 13-1-24.
+//  Copyright (c) 2013年 Carl Hwang. All rights reserved.
 //
 
 #import "RunSetupTableViewController.h"
@@ -36,15 +36,13 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
+
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
+
     return 5;
 }
 

@@ -2,8 +2,8 @@
 //  RunningViewController.m
 //  Run and Roll
 //
-//  Created by Joaquin on 13-2-7.
-//  Copyright (c) 2013年 Joaquin Hwang. All rights reserved.
+//  Created by Carl on 13-2-7.
+//  Copyright (c) 2013年 Carl Hwang. All rights reserved.
 //
 
 #import "RunningViewController.h"
@@ -12,149 +12,187 @@
 
 @end
 
+#pragma mark - Defines
+typedef int LayoutCode;
+
+//Layout Code
+const LayoutCode INRUN_MUSIC = 1;
+const LayoutCode INRUN_NOMSC = 2;
+const LayoutCode PAUSE_MUSIC = 3;
+const LayoutCode PAUSE_NOMSC = 4;
+
+typedef int CheckMarkCellType;
+
+const CheckMarkCellType NONE = 1;
+const CheckMarkCellType NOW = 2;
+const CheckMarkCellType PLAYLIST = 3;
+
 @implementation RunningViewController
 
+//music info
+@synthesize musicTitleLabel;
+@synthesize prevButton;
+@synthesize nextButton;
+@synthesize changeButton;
+@synthesize addMusicButton;
+
+//running info
+@synthesize totalDistanceLabel;
+@synthesize timerLabel;
+@synthesize speedLabel;
+@synthesize lastMinuteDistanceLabel;
+
+@synthesize mapView;
+@synthesize mapViewBackButton;
+
+//running info title
+@synthesize milePresentLabel;
+@synthesize timerPresentImage;
+@synthesize speedPresentImage;
+@synthesize lastMinutePresentLabel;
+
+//helper
+@synthesize scrollView;
+@synthesize pauseButton;
+@synthesize mainLogoImage;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    locationsArray = [[NSMutableArray alloc] init];
+    locationModule = [[LocationModule alloc] init];
+
     
-    locationManager = [[CLLocationManager alloc] init];
-    locationManager.delegate = self;
-    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    locationManager.distanceFilter = 5.f;
+    [self widgetInit];
+    [self timerInit];
+    /*--注释1holder--*/
+}
+
+//控件初始化
+- (void)widgetInit
+{
+    //scrollView Initialize
+    scrollView.contentSize = CGSizeMake(320*2, 320);
+
+    //mapView Initialize
+    mapView = locationModule.mapView;
     
-    [locationManager startUpdatingLocation];
+    //mapViewBackButton Initialize
+    mapViewBackButton= [[UIButton alloc] initWithFrame:CGRectMake(20, 20, 73, 43)];
+    [mapViewBackButton addTarget:self action:@selector(btnSetOffset:) forControlEvents:UIControlEventTouchUpInside];
+    [mapViewBackButton setImage:[UIImage imageNamed:@"IMG_0748.JPG"] forState:UIControlStateNormal];
     
+    [scrollView addSubview:self.mapView];
+    [mapView addSubview:self.mapViewBackButton];
+        
+    [self setWidgetLayout:INRUN_NOMSC];
+     
+}
+
+//选择不同状态下的控件组
+- (void)setWidgetLayout:(LayoutCode)code
+{
+    switch (code) {
+        case INRUN_NOMSC:
+            prevButton.hidden = YES;
+            nextButton.hidden = YES;
+            changeButton.hidden = YES;
+            addMusicButton.hidden = YES;
+            break;
+        case INRUN_MUSIC:
+            prevButton.hidden = YES;
+            nextButton.hidden = YES;
+            changeButton.hidden = YES;
+            addMusicButton.hidden = YES;
+            break;
+        case PAUSE_NOMSC:
+            prevButton.hidden = YES;
+            nextButton.hidden = YES;
+            changeButton.hidden = YES;
+            addMusicButton.hidden = NO;
+            break;
+        case PAUSE_MUSIC:
+            prevButton.hidden = NO;
+            nextButton.hidden = NO;
+            changeButton.hidden = NO;
+            addMusicButton.hidden = YES;
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    NSString *id = [segue identifier];
+    if ([id isEqualToString:@"Music1"] || [id isEqualToString:@"Music2"]) {
+        UINavigationController *navigationController = segue.destinationViewController;
+        MusicTableViewController *musicController = [[navigationController viewControllers] objectAtIndex:0];
+        musicController.delegate = self;
+        musicController.m_checkMarkCellType = NONE;
+    }
+}
+
+#pragma mark - Timer
+- (void)timerInit
+{
     timerMinute = timerSecond = 0;
-    distance = 0.0;
-    lastAvailableLocation = nil;
     [NSTimer scheduledTimerWithTimeInterval:(1.f) target:self selector:@selector(timerAdvance:) userInfo:nil repeats:YES];
 }
 
-- (void)timerAdvance:(NSTimer*)timer
-{
+- (void)timerAdvance:(NSTimer*)timer{
     timerSecond++;
     if(timerSecond >= 60)
     {
         timerMinute++;
         timerSecond=0;
     }
-    if (timerSecond < 10) 
-         self.totalTimeLabel.text = [NSString stringWithFormat:@"%d:0%d", timerMinute, timerSecond];
-    else
-         self.totalTimeLabel.text = [NSString stringWithFormat:@"%d:%d", timerMinute, timerSecond];
+    timerLabel.text = [NSString stringWithFormat:@"%.2d:%.2d", timerMinute, timerSecond];
+}
+#pragma mark - Timer - end
+
+- (IBAction)btnSetOffset:(id)sender {
+    [scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
 }
 
-- (void)didReceiveMemoryWarning
+#pragma mark - MusicController delegate
+- (void)musicControllerDidCancel:(MusicTableViewController *)controller
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [controller dismissModalViewControllerAnimated:YES];
+}
+- (void)musicControllerDidDone:(MusicTableViewController *)controller
+{
+    
 }
 
 - (void)viewDidUnload {
-    [self setMapView:nil];
-    [self setTotalTimeLabel:nil];
-    [self setAvgSpeedLabel:nil];
     [self setTotalDistanceLabel:nil];
+    [self setChangeButton:nil];
+    [self setAddMusicButton:nil];
     [super viewDidUnload];
 }
-
-- (void)setMapRoute
-{
-    MKMapPoint northEastPoint = MKMapPointMake(0.f,0.f);
-    MKMapPoint southWestPoint = MKMapPointMake(0.f,0.f);
-    MKMapPoint *pointArray = malloc(sizeof(CLLocationCoordinate2D) *locationsArray.count);
-    
-    for(int idx = 0; idx < locationsArray.count; idx++)
-    {
-        CLLocation *location = [locationsArray objectAtIndex:idx];
-        
-        CLLocationDegrees latitude  = location.coordinate.latitude;
-        CLLocationDegrees longitude = location.coordinate.longitude;
-        
-        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
-        MKMapPoint point = MKMapPointForCoordinate(coordinate);
-        
-        if (idx == 0)
-        {
-            northEastPoint = point;
-            southWestPoint = point;
-        }
-        else
-        {
-            if (point.x > northEastPoint.x)
-                northEastPoint.x = point.x;
-            if (point.y > northEastPoint.y)
-                northEastPoint.y = point.y;
-            if (point.x < southWestPoint.x)
-                southWestPoint.x = point.x;
-            if (point.y < southWestPoint.y) 
-                southWestPoint.y = point.y;
-        }        
-        
-        pointArray[idx] = point;        
-    }
-    
-    if (self.routeLine)
-        [self.mapView removeOverlay:self.routeLine];
-    
-    self.routeLine = [MKPolyline polylineWithPoints:pointArray count:locationsArray.count];
-    
-    if (nil != self.routeLine)
-        [self.mapView addOverlay:self.routeLine];   
-    
-    free(pointArray);
+- (IBAction)pauseRunning:(id)sender {
+    [self setWidgetLayout:PAUSE_NOMSC];
 }
-
-#pragma mark - MKMapView Delegate
-- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
-{
-    MKOverlayView* overlayView = nil;
-    if(overlay == self.routeLine)
-    {
-        //if we have not yet created an overlay view for this overlay, create it now.
-        if(nil == self.routeLineView)
-        {
-            self.routeLineView = [[MKPolylineView alloc] initWithPolyline:self.routeLine];
-            self.routeLineView.fillColor = [UIColor redColor];
-            self.routeLineView.strokeColor = [UIColor redColor];
-            self.routeLineView.lineWidth = 3;
-        }
-        overlayView = self.routeLineView;
-    }
-    return overlayView;
-}
-
-#pragma mark - CLLocationManager Delegate
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
-{
-    if(newLocation.coordinate.latitude == 0.0f || newLocation.coordinate.longitude == 0.0f)
-        return;
-    
-    double newDistance = [newLocation distanceFromLocation:lastAvailableLocation];
-    
-    if (lastAvailableLocation == nil) {
-        lastAvailableLocation = newLocation;
-        [locationsArray addObject:newLocation];
-    }
-    
-    if (newDistance >= 5.0f) {
-        distance += newDistance;
-        lastAvailableLocation = newLocation;
-        [locationsArray addObject:newLocation];
-        //[self updateLocation];
-        
-        // create the overlay
-        [self setMapRoute];
-        
-        // zoom in on the route.
-        //[self zoomInOnRoute];
-    }
-    self.totalDistanceLabel.text = [NSString stringWithFormat:@"%.2f", distance];
-
-}
-
 @end
+
+
+/*------------------文件输出写法-------------------------------/
+ NSFileManager *fileManager = [NSFileManager defaultManager];
+ NSArray *directoryPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+ documentDirectory = [directoryPaths objectAtIndex:0];
+ NSString *didUpdateToLocationfilePath = [documentDirectory stringByAppendingPathComponent:@"didUpdateLog.txt"];
+ NSString *viewForOverLayfilePath= [documentDirectory stringByAppendingPathComponent:@"viewForOverlayLog.txt"];
+ if (![fileManager fileExistsAtPath:didUpdateToLocationfilePath]) {
+ [fileManager createFileAtPath:didUpdateToLocationfilePath contents:nil attributes:nil];
+ }
+ if (![fileManager fileExistsAtPath:viewForOverLayfilePath]) {
+ [fileManager createFileAtPath:viewForOverLayfilePath contents:nil attributes:nil];
+ }
+ 
+ NSString *string2 = [NSString stringWithFormat:@"count of locationsArray is %d \n", locationsArray.count];
+ NSString *string3 = @"---------------out didUpdateToLocation-----------------\n";
+ //NSMutableData *writer = [[NSMutableData alloc] init];
+ [writerLocation appendData:[string1 dataUsingEncoding:NSUTF8StringEncoding]];
+ [writerLocation appendData:[string2 dataUsingEncoding:NSUTF8StringEncoding]];
+ [writerLocation appendData:[string3 dataUsingEncoding:NSUTF8StringEncoding]];
+------------------文件输出写法-------------------------------*/

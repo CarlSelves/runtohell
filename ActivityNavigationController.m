@@ -2,8 +2,8 @@
 //  ActivityNavigationController.m
 //  Run and Roll
 //
-//  Created by Joaquin on 13-1-28.
-//  Copyright (c) 2013年 Joaquin Hwang. All rights reserved.
+//  Created by Carl on 13-1-28.
+//  Copyright (c) 2013年 Carl Hwang. All rights reserved.
 //
 
 #import "ActivityNavigationController.h"
