@@ -1,13 +1,13 @@
 //
-//  DataManager.h
+//  Defines.h
 //  Run and Roll
 //
-//  Created by Joaquin on 13-5-5.
+//  Created by Joaquin on 13-4-30.
 //  Copyright (c) 2013年 Joaquin Hwang. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
-@interface DataManager : NSObject
+@interface Defines : NSObject
 
 @end
