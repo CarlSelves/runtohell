@@ -10,14 +10,18 @@
 #import <MapKit/MapKit.h>
 #import "LocationModule.h"
 #import "MusicTableViewController.h"
+#import "ActivityDetailController.h"
 
-@interface RunningViewController : UIViewController<MusicControllerDelegate>
+@interface RunningViewController : UIViewController<MusicControllerDelegate,LocationModuleDelegate>
 {
     int timerMinute;
     int timerSecond;
-    
-    LocationModule* locationModule;
+    ActivityInfo *activityInfo;
+    LocationModule *locationModule;
+    int startTimestamp;
 }
+@property (nonatomic,strong) ActivityInfo *activityInfo;
+
 //music info
 @property (nonatomic, strong) IBOutlet UILabel *musicTitleLabel;
 @property (nonatomic, strong) IBOutlet UIButton *prevButton;
@@ -30,6 +34,9 @@
 @property (nonatomic, strong) IBOutlet UILabel *timerLabel;
 @property (nonatomic, strong) IBOutlet UILabel *speedLabel;
 @property (nonatomic, strong) IBOutlet UILabel *lastMinuteDistanceLabel;
+
+@property (strong, nonatomic) IBOutlet UIButton *continueButton;
+@property (strong, nonatomic) IBOutlet UIButton *finishButton;
 
 @property (nonatomic, strong) MKMapView *mapView;
 @property (nonatomic, strong) UIButton *mapViewBackButton;
@@ -47,6 +54,7 @@
 
 //button respond
 - (IBAction)pauseRunning:(id)sender;
-
+- (IBAction)continueRunning:(id)sender;
+- (IBAction)finishRunning:(id)sender;
 
 @end

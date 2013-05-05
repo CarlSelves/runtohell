@@ -7,7 +7,7 @@
 //
 
 #import "InitailSlidingViewController.h"
-#import "DataManager.h"
+#import "DatabaseManager.h"
 
 @interface InitailSlidingViewController ()
 
@@ -23,7 +23,6 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
     self.topViewController = [storyboard instantiateViewControllerWithIdentifier:@"Home"];
     
-    [[DataManager getInstance] openDatabase];
 }
 
 - (void)didReceiveMemoryWarning

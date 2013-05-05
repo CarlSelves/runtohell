@@ -10,6 +10,8 @@
 
 @implementation LocationModule
 @synthesize mapView;
+@synthesize totalDist;
+@synthesize locationsArray;
 
 - (LocationModule*) init
 {
@@ -30,6 +32,8 @@
     [mapView setRegion:[mapView regionThatFits:region] animated:YES];
     
     lastAvailableLocation = nil;
+    totalDist = 0.f;
+    isFirstDist = YES;
     
     return self;
 }
@@ -105,31 +109,39 @@
         if (newLocation == nil)
             return;
         
-        double newDistance = [newLocation distanceFromLocation:lastAvailableLocation];
-        if (lastAvailableLocation == nil)
+        if (lastAvailableLocation)
+        {
+            double newDistance = [newLocation distanceFromLocation:lastAvailableLocation];
+            NSLog(@"newdistance: %f", newDistance);
+            float distInterval = isFirstDist ? 10.0f : 5.0f;
+            if (newDistance >= distInterval)
+            {
+                NSLog(@"invoke if");
+                totalDist += newDistance;
+                [self.delegate changeTotalDist];
+                isFirstDist = NO;
+                lastAvailableLocation = newLocation;
+                [locationsArray addObject:newLocation];
+                //[self updateLocation];
+                // create the overlay
+                [self setMapRoute];
+                // zoom in on the route.
+                //[self zoomInOnRoute];
+            }
+
+        }
+        else
         {
             lastAvailableLocation = newLocation;
             [locationsArray addObject:newLocation];
             MKCoordinateRegion region = MKCoordinateRegionMake(newLocation.coordinate, MKCoordinateSpanMake(0.002, 0.002));
             [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
         }
-        NSLog(@"%f", newDistance);
-        if (newDistance >= 5.0f)
-        {
-            NSLog(@"invoke if");
-            //distance += newDistance;
-            lastAvailableLocation = newLocation;
-            [locationsArray addObject:newLocation];
-            //[self updateLocation];
-            // create the overlay
-            [self setMapRoute];
-            // zoom in on the route.
-            //[self zoomInOnRoute];
-        }
     }
-    
-    //self.totalDistanceLabel.text = [NSString stringWithFormat:@"位移(meters):%.2f", distance];
 }
 
-
+-(void)stopLocationUpdate
+{
+    [locationManager stopUpdatingLocation];
+}
 @end
