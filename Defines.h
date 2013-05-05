@@ -6,8 +6,4 @@
 //  Copyright (c) 2013年 Joaquin Hwang. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-@interface Defines : NSObject
-
-@end
+typedef int WHETHER;

@@ -9,5 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface ActivityCell : UITableViewCell
+@property (strong, nonatomic) IBOutlet UILabel *m_DistanceLabel;
+@property (strong, nonatomic) IBOutlet UIImageView *m_StatusImage;
+@property (strong, nonatomic) IBOutlet UIImageView *m_HonorImage;
+@property (strong, nonatomic) IBOutlet UILabel *m_DateLabel;
+@property (strong, nonatomic) IBOutlet UILabel *m_TimeLabel;
+@property (strong, nonatomic) IBOutlet UILabel *m_SpeedLabel;
 
 @end
