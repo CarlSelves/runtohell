@@ -17,6 +17,7 @@
 @synthesize m_totalTimeLabel;
 @synthesize m_activityInfo;
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -98,9 +99,10 @@
     if (nil != m_polyLine)
         [m_mapView addOverlay:m_polyLine];
     
-    CLLocation *firstLocation = [m_activityInfo.m_locations objectAtIndex:0];
-    MKCoordinateRegion region = MKCoordinateRegionMake(firstLocation.coordinate, MKCoordinateSpanMake(0.002, 0.002));
-    [m_mapView setRegion:[m_mapView regionThatFits:region] animated:YES];
+    //处理缩放
+//    CLLocation *firstLocation = [m_activityInfo.m_locations objectAtIndex:0];
+//    MKCoordinateRegion region = MKCoordinateRegionMake(firstLocation.coordinate, MKCoordinateSpanMake(0.002, 0.002));
+//    [m_mapView setRegion:[m_mapView regionThatFits:region] animated:YES];
     
     free(pointArray);
 }
