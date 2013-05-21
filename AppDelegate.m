@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "DataManager.h"
+#import "DatabaseManager.h"
 
 @implementation AppDelegate
 
@@ -15,6 +17,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    [[DatabaseManager getInstance] createActivityInfo];
+    [[DataManager getInstance] getAndSaveAllActInfo];
     return YES;
 }
 							

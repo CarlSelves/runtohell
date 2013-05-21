@@ -14,14 +14,14 @@
 @implementation DatabaseManager
 //@synthesize m_database;
 
+
+static DatabaseManager* g_databaseManager = nil;
 +(DatabaseManager*)getInstance
 {
-    static dispatch_once_t pred = 0;
-    __strong static DatabaseManager *_sharedObject = nil;
-    dispatch_once(&pred, ^{
-        _sharedObject = [[self alloc] init]; // or some other init method
-    });
-    return _sharedObject;
+    if (g_databaseManager == nil) {
+        g_databaseManager = [[DatabaseManager alloc] init];
+    }
+    return g_databaseManager;
 }
 
 
@@ -53,7 +53,7 @@
 
 -(void)createActivityInfo
 {
-    NSString *sql = @"CREATE TABLE 'main'.'Activity_Info' ('id' IINTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE ,'date_timestamp' INTEGER NOT NULL ,'distance' FLOAT NOT NULL  DEFAULT (0.0) ,'total_time' FLOAT NOT NULL  DEFAULT (0.0) ,'speed' FLOAT NOT NULL  DEFAULT (0.0) ,'calorie' INTEGER NOT NULL  DEFAULT (0) ,'status' INTEGER NOT NULL  DEFAULT (3) ,'record_timestamp' INTEGER NOT NULL  DEFAULT (0) ,'map_table_name' INTEGER NOT NULL  DEFAULT (0) )";
+    NSString *sql = @"CREATE TABLE if not exists 'main'.'Activity_Info' ('id' INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE ,'date_timestamp' INTEGER NOT NULL ,'distance' FLOAT NOT NULL  DEFAULT (0.0) ,'total_time' FLOAT NOT NULL  DEFAULT (0.0) ,'speed' FLOAT NOT NULL  DEFAULT (0.0) ,'calorie' INTEGER NOT NULL  DEFAULT (0) ,'status' INTEGER NOT NULL  DEFAULT (3) ,'record_timestamp' INTEGER NOT NULL  DEFAULT (0) ,'map_table_name' INTEGER NOT NULL  DEFAULT (0) )";
     
     if ([self openDatabase]) {
         if (sqlite3_exec(m_database, [sql UTF8String], NULL, NULL, nil) == SQLITE_OK) {
@@ -84,6 +84,8 @@
     if ([self openDatabase]) {
         if (sqlite3_exec(m_database, [sql UTF8String], NULL, NULL, &errMsg) == SQLITE_OK) {
             NSLog(@"INSERT act OK");
+            [self createMapTableByName:activity.m_mapInfoTableName];
+            [self insertOneLocationsArray:activity.m_locations toMap:activity.m_mapInfoTableName];
         }
         [self closeDatabase];
     }
@@ -109,18 +111,19 @@
                 oneActInfo.m_record = [self selectRecordsByTimestamp:recordTimeStamp];
                 int mapTableName = sqlite3_column_int(statement, 7);
                 oneActInfo.m_locations = [self selectOneMapForLocationsArray:mapTableName];
-                [tmpArray addObject:tmpArray];
+                [tmpArray addObject:oneActInfo];
+                [oneActInfo release];
             }
         }
         sqlite3_finalize(statement);
         [self closeDatabase];
-        return tmpArray;
+        return [tmpArray autorelease];
     }
     return nil;
 }
 
 -(void)createRecordTable{
-    NSString *sql = @"CREATE  TABLE 'main'.'Record' ('id' INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , 'timestamp' INTEGER NOT NULL , 'type' INTEGER NOT NULL )";
+    NSString *sql = @"CREATE TABLE if not exists 'main'.'Record' ('id' INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , 'timestamp' INTEGER NOT NULL , 'type' INTEGER NOT NULL )";
     if ([self openDatabase]) {
         if (sqlite3_exec(m_database, [sql UTF8String], NULL, NULL, nil) == SQLITE_OK) {
             NSLog(@"create Record table ok");
@@ -155,13 +158,13 @@
         }
         sqlite3_finalize(statement);
         [self closeDatabase];
-        return tmpArray;
+        return [tmpArray autorelease];
     }
     return nil;
 }
 
 -(void)createMapTableByName:(int)name{
-    NSString *sql = [NSString stringWithFormat:@"CREATE  TABLE 'main'.'%d' ('id' INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , 'latitude' DOUBLE NOT NULL , 'longtitude' DOUBLE NOT NULL )", name];
+    NSString *sql = [NSString stringWithFormat:@"CREATE TABLE if not exists 'main'.'%d' ('id' INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , 'latitude' DOUBLE NOT NULL , 'longtitude' DOUBLE NOT NULL )", name];
     if ([self openDatabase]) {
         if (sqlite3_exec(m_database, [sql UTF8String], NULL, NULL, nil) == SQLITE_OK) {
             NSLog(@"create map table ok");
@@ -196,13 +199,19 @@
                 double longtitude = sqlite3_column_double(statement, 1);
                 CLLocation *location = [[CLLocation alloc] initWithLatitude:latitude longitude:longtitude];
                 [tmpArray addObject:location];
+                [location release];
             }
         }
         sqlite3_finalize(statement);
         [self closeDatabase];
-        return tmpArray;
+        return [tmpArray autorelease];
     }
     return nil;
+}
+
+-(void)dealloc{
+    [g_databaseManager release];
+    [super dealloc];
 }
 
 @end

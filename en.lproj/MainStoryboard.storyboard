@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="E5J-dJ-COT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="2">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -180,7 +180,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="100" id="oLK-4f-0tL" customClass="ActivityCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ActivityCell" rowHeight="100" id="oLK-4f-0tL" customClass="ActivityCell">
                                 <rect key="frame" x="0.0" y="22" width="320" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -248,7 +248,7 @@
                                     <outlet property="m_SpeedLabel" destination="9fe-Dp-siR" id="4CS-gA-yd9"/>
                                     <outlet property="m_StatusImage" destination="2XM-Ry-fRU" id="58X-AH-BMc"/>
                                     <outlet property="m_TimeLabel" destination="tdx-c9-xIA" id="t3k-BA-9lO"/>
-                                    <segue destination="1vE-sE-BcS" kind="push" id="7FV-Of-gIj"/>
+                                    <segue destination="DPI-Id-gDN" kind="push" id="7oV-2t-ZL0"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -921,7 +921,7 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="7FV-Of-gIj"/>
         <segue reference="WaL-sT-bjF"/>
+        <segue reference="7oV-2t-ZL0"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -215,6 +215,7 @@ const CheckMarkCellType PLAYLIST = 3;
     activityInfo.m_mapInfoTableName = (int)[[NSDate date] timeIntervalSince1970];
     activityInfo.m_speed = locationModule.totalDist/(timerMinute+(float)timerSecond/60);
     activityInfo.m_totalTime = timerMinute * 60 + timerSecond;
+    activityInfo.m_status = 3;
     activityInfo.m_locations = locationModule.locationsArray;
     [locationModule stopLocationUpdate];
     

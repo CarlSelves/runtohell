@@ -10,6 +10,12 @@
 #import "ECSlidingViewController.h"
 
 @interface ActivityTableViewController : UITableViewController
+{
+    NSMutableArray *m_MonthSet;
+    NSMutableDictionary *m_DateSetForMonth;
+}
 - (IBAction)revealMenu:(id)sender;
+@property (nonatomic,strong) NSMutableArray *m_MonthSet;
+@property (nonatomic,strong) NSMutableDictionary *m_DateSetForMonth;
 
 @end

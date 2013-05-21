@@ -7,45 +7,60 @@
 //
 
 #import "ActivityTableViewController.h"
+#import "DataManager.h"
+#import "ActivityCell.h"
+#import "ActivityInfo.h"
 
-@interface ActivityTableViewController ()
-
-@end
 
 @implementation ActivityTableViewController
+@synthesize m_DateSetForMonth;
+@synthesize m_MonthSet;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    NSArray *AllActInfo = [[DataManager getInstance] getAllActInfo];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    for (ActivityInfo *act in AllActInfo) {
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:act.m_dateTimeStamp];
+        NSString *dateStr = [formatter stringFromDate:date];
+        BOOL has
+        for (NSString *str in m_MonthSet) {
+            if ([str isEqualToString:dateStr]) {
+                <#statements#>
+            }
+        }
+    }
+}
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-
-    return 0;
+    return [[[DataManager getInstance] getAllActInfo] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    static NSString *CellIdentifier = @"ActivityCell";
+    ActivityCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    // Configure the cell...
+    ActivityInfo *act = [[[DataManager getInstance] getAllActInfo] objectAtIndex:indexPath.row];
+    
+    cell.m_DateLabel.text = [NSString stringWithFormat:@"%d",act.m_dateTimeStamp];
+    cell.m_DistanceLabel.text = [NSString stringWithFormat:@"%f", act.m_distance];
+    cell.m_SpeedLabel.text = [NSString stringWithFormat:@"%f",act.m_speed];
+    cell.m_TimeLabel.text = [NSString stringWithFormat:@"%d", act.m_totalTime];   
     
     return cell;
 }

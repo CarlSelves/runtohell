@@ -15,8 +15,19 @@
     sqlite3 *m_database;
 }
 
-+ (DatabaseManager*)getInstance;
-- (void)insertOneActivity:(ActivityInfo *)activity;
-- (void)createActivityInfo;
++(DatabaseManager*)getInstance;
+
+-(void)insertOneActivity:(ActivityInfo *)activity;
+-(void)createActivityInfo;
+-(void)dropActivityInfo;
+-(NSArray *)selectAllActivities;
+
+-(void)createRecordTable;
+-(void)insertOneRecordByType:(int)type andTimestamp:(int)timestamp;
+-(NSArray *)selectRecordsByTimestamp:(int)timestamp;
+
+-(void)createMapTableByName:(int)name;
+-(void)insertOneLocationsArray:(NSArray *)locationsArray toMap:(int)mapTableName;
+-(NSArray *)selectOneMapForLocationsArray:(int)mapTableName;
 
 @end

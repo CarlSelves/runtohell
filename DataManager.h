@@ -10,4 +10,10 @@
 
 @interface DataManager : NSObject
 
+@property (nonatomic, strong) NSArray *allActivityInfo;
+
++(DataManager *)getInstance;
+-(void)getAndSaveAllActInfo;
+-(NSArray *)getAllActInfo;
+
 @end

@@ -21,15 +21,15 @@
     int m_mapInfoTableName;
     NSArray *m_locations;
 }
-@property(nonatomic) int m_identify;
-@property(nonatomic) int m_dateTimeStamp;
-@property(nonatomic) float m_distance;
-@property(nonatomic) int m_totalTime;
-@property(nonatomic) float m_speed;
-@property(nonatomic) int m_calorie;
-@property(nonatomic) int m_status;
+@property(nonatomic,assign) int m_identify;
+@property(nonatomic,assign) int m_dateTimeStamp;
+@property(nonatomic,assign) float m_distance;
+@property(nonatomic,assign) int m_totalTime;
+@property(nonatomic,assign) float m_speed;
+@property(nonatomic,assign) int m_calorie;
+@property(nonatomic,assign) int m_status;
 @property(nonatomic,strong) NSArray *m_record;
-@property(nonatomic) int m_mapInfoTableName;
+@property(nonatomic,assign) int m_mapInfoTableName;
 @property(nonatomic,strong) NSArray *m_locations;
 
 @end
